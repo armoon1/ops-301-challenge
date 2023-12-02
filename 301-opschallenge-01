@@ -1,0 +1,4 @@
+#!/bin/bash
+
+#Copies /var/log/syslog to the current working directory
+cp /var/log/syslog ./syslog-file" "$(date +%Y-%m-%d-%T)
