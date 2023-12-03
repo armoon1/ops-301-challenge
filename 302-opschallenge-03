@@ -1,0 +1,36 @@
+#!/bin/bash
+# Author:                       SEYED MEHDI HASHEMI SOHI
+# Date of latest revision:      12/02/2023
+# Purpose:                      Conditionals in Menu Systems
+
+#Create a bash script that launches a menu system with the following options:
+#Hello world (prints “Hello world!” to the screen)
+#Ping self (pings this computer’s loopback address)
+#IP info (print the network adapter information for this computer)
+#Exit
+#Next, the user input should be requested.
+#The program should next use a conditional statement to evaluate the user’s input, then act according to what the user selected.
+#Use a loop to bring up the menu again after the request has been executed.
+exit=0
+
+while [ $exit -eq 0 ]; do
+    echo "Please select a number from the options:"
+    echo "1. Hello world!"
+    echo "2. Self ping"
+    echo "3. IP info"
+    echo "4. Exit"
+    read -r input
+
+    if [ "$input" -eq 1 ]; then
+        echo "Hello world!"
+    elif [ "$input" -eq 2 ]; then
+        ping -c3 127.0.0.1
+    elif [ "$input" -eq 3 ]; then
+        ip a
+    elif [ "$input" -eq 4 ]; then
+        exit=1
+    else
+        echo "Invalid option"
+    fi
+done
+
