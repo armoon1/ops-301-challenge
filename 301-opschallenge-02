@@ -1,18 +1,16 @@
 #!/bin/bash
+# Author:                       SEYED MEHDI HASHEMI SOHI
+# Date of latest revision:      12/02/2023
+# Purpose:                      Permission
 
-
-#/Prompts user for input directory path.
-#/Prompts user for input permissions number (e.g. 777 to perform a chmod 777)
-#/Navigates to the directory input by the user and changes all files inside it to the input setting.
-#/Prints to the screen the directory contents and the new permissions settings of everything in the directory.
-
+#Prompts user for input directory path.
 echo "prompt user for directory path"
 read path
-
+#Prompts user for input permissions number (e.g. 777 to perform a chmod 777)
 echo "prompt user for input permission number"
 read permission
-
+#Navigates to the directory input by the user and changes all files inside it to the input setting.
 cd $path
 chmod $permission *
-
+#Prints to the screen the directory contents and the new permissions settings of everything in the directory.
 ls -al
