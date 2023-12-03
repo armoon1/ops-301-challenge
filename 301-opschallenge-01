@@ -1,4 +1,8 @@
 #!/bin/bash
 
-#Copies /var/log/syslog to the current working directory
+# Author:                       SEYED MEHDI HASHEMI SOHI
+# Date of latest revision:      12/02/2023
+# Purpose:                      Copy+Append date
+
+#Copies /var/log/syslog to the current working directory, append date
 cp /var/log/syslog ./syslog-file" "$(date +%Y-%m-%d-%T)
