@@ -1,0 +1,44 @@
+#!/bin/bash
+# Author:                       SEYED MEHDI HASHEMI SOHI
+# Date of latest revision:      12/03/2023
+# Purpose:                      Clearing Logs
+
+#!/bin/bash
+
+# Set the backup directory
+backup_dir="/var/log/backups"
+
+# Ensure the backup directory exists
+mkdir -p "$backup_dir"
+
+# Function to print file size
+print_file_size() {
+    file=$1
+    size=$(du -h "$file" | cut -f1)
+    echo "File size of $file: $size"
+}
+
+# Function to compress and backup log files
+compress_and_backup() {
+    file=$1
+    timestamp=$(date +"%Y%m%d%H%M%S")
+    compressed_file="$backup_dir/$(basename "$file")-$timestamp.zip"
+
+    # Print original file size
+    print_file_size "$file"
+
+    # Compress the file
+    gzip -c "$file" > "$compressed_file"
+
+    # Clear the contents of the original log file
+    > "$file"
+
+    # Print compressed file size
+    print_file_size "$compressed_file"
+}
+
+# Compress and backup syslog
+compress_and_backup "/var/log/syslog"
+
+# Compress and backup wtmp
+compress_and_backup "/var/log/wtmp"
