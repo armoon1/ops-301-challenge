@@ -7,9 +7,10 @@
 import os
 
 # Declaration of variables
-
+fruits = ['apple','banana', 'kiwi']
 ### Read user input here into a variable
-
+user_input=input("Enter name: ")
+print("You entered: ", user_input)
 # Declaration of functions
 
 ### Declare a function here
