@@ -5,23 +5,41 @@
 
 # Write a bash script that performs the following tasks:
 
-# Print to the screen the file size of the log files before compression
-# Compress the contents of the log files listed below to a backup directory
-# /var/log/syslog
-# /var/log/wtmp
-# The file name should contain a time stamp with the following format -YYYYMMDDHHMMSS
-# Example: /var/log/backups/syslog-20220928081457.zip
-# Hint: gzip is a preinstalled Linux application for performing zip formatted compression.
+# Set the backup directory
+backup_dir="/var/log/backups"
 
-# Clear the contents of the log file
-# Print to screen the file size of the compressed file
-# Compare the size of the compressed files to the size of the original log files
+# Function to print file size
+print_file_size() {
+    echo "File size of $1: $(du -h $1 | cut -f1)"
+}
 
-function check_file_size(){
-    :
-    # Print file_size
-}
-function compress_log_file(){
-    :
-    # Print compress_file
-}
+# Print original file sizes
+echo "Original file sizes before compression:"
+print_file_size "/var/log/syslog"
+print_file_size "/var/log/wtmp"
+
+# Create timestamp for the compressed file
+timestamp=$(date "+%Y%m%d%H%M%S")
+
+# Compress log files to backup directory
+gzip -c /var/log/syslog > "$backup_dir/syslog-$timestamp.gz"
+gzip -c /var/log/wtmp > "$backup_dir/wtmp-$timestamp.gz"
+
+# Clear the contents of the log files
+echo "" > /var/log/syslog
+echo "" > /var/log/wtmp
+
+# Print compressed file sizes
+echo -e "\nCompressed file sizes:"
+print_file_size "$backup_dir/syslog-$timestamp.gz"
+print_file_size "$backup_dir/wtmp-$timestamp.gz"
+
+# Compare sizes
+echo -e "\nSize comparison:"
+echo "Original syslog size vs Compressed syslog size:"
+cmp_size=$(cmp -l "/var/log/syslog" "$backup_dir/syslog-$timestamp.gz" | wc -l)
+echo "Number of different bytes: $cmp_size"
+
+echo -e "\nOriginal wtmp size vs Compressed wtmp size:"
+cmp_size=$(cmp -l "/var/log/wtmp" "$backup_dir/wtmp-$timestamp.gz" | wc -l)
+echo "Number of different bytes: $cmp_size"
