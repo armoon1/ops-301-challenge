@@ -2,3 +2,38 @@
 # Author:                       SEYED MEHDI HASHEMI SOHI
 # Date of latest revision:      12/13/2023
 # Purpose:                      Powershell
+
+Install-WindowsFeature -Name RSAT-AD-PowerShell -IncludeAllSubFeature -IncludeManagementTools
+# Import the Active Directory module
+Import-Module ActiveDirectory
+
+# Define user information
+$firstName = "Franz"
+$lastName = "Ferdinand"
+$jobTitle = "TPS Reporting Lead"
+$department = "TPS Department"
+$company = "GlobeX USA"
+$officeLocation = "Springfield, OR"
+$email = "ferdi@GlobeXpower.com"
+$username = $email -split "@" | Select-Object -First 1  # Extract username from email
+
+# Set the AD user properties
+$userProperties = @{
+    GivenName = $firstName
+    Surname = $lastName
+    DisplayName = "$firstName $lastName"
+    SamAccountName = $username
+    UserPrincipalName = $email
+    Title = $jobTitle
+    Department = $department
+    Company = $company
+    Office = $officeLocation
+    EmailAddress = $email
+    Enabled = $true
+}
+
+# Create the new AD user
+New-ADUser @userProperties -PassThru
+
+# Optional: Add the user to a specific AD group
+# Add-ADGroupMember -Identity "YourGroupName" -Members $username
